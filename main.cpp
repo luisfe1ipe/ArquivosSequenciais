@@ -33,3 +33,35 @@ struct participante
     char nome[30];
     int id_evento;
 };
+
+int main(int argc, char const *argv[])
+{
+    char op = 'x';
+    while (op != '0')
+    {
+        system("cls");
+        cout << "\t\tLista Sequencial de Alunos de tamanho: " << N << "\n\n";
+
+        cout << "\t\t\t|Menu de opcoes|\n\n";
+        cout << "\t\t[0] - [Sair]\n";
+
+        fflush(stdin);
+        cout << "\n\n\t\tInforme a sua escolha: ";
+        op = getchar();
+
+        switch (op)
+        {
+        case '0':
+        {
+            cout << "\n\nSaindo...\n\n";
+            break;
+        }
+        default:
+        {
+            cout << "Opção invalida";
+            break;
+        }
+        }
+        system("pause");
+    }
+}
