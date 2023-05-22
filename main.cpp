@@ -52,7 +52,7 @@ void lerCidades(struct cidade cidade[], int &contCidade)
         cin >> cidade[i].uf;
         cout << "============================================\n\n";
     }
-    contCidade = contCidade + qtdCidade;
+    contCidade = qtdCidade;
 }
 
 void exibirCidades(struct cidade cidade[], int contCidade)
@@ -83,7 +83,7 @@ void lerApresentadores(struct apresentador apresentador[], int &contApresentador
         cin >> apresentador[i].nome;
         cout << "============================================\n";
     }
-    contApresentador = contApresentador + qtdApresentadores;
+    contApresentador = qtdApresentadores;
 }
 
 bool verificarCidade(struct cidade cidade[], int idCidade, int qtd)
@@ -92,15 +92,16 @@ bool verificarCidade(struct cidade cidade[], int idCidade, int qtd)
     int m = (i + qtdVetor) / 2;
     int confirmar;
 
-    for (; i < qtdVetor && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
+
+    for (; qtdVetor >= i && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
     {
-        if (cidade[m].id < idCidade)
+        if (idCidade > cidade[m].id)
         {
-            qtdVetor = m - 1;
+            i = m + 1;
         }
         else
         {
-            i = m + 1;
+            qtdVetor = m - 1;
         }
     }
 
@@ -127,6 +128,7 @@ bool verificarCidade(struct cidade cidade[], int idCidade, int qtd)
 
 bool verificarApresentador(struct apresentador apresentador[], int idApresentador, int qtd)
 {
+    int confirmar = 9;
     int i = 0, qtdVetor = qtd;
     int m = (i + qtdVetor) / 2;
     for (; qtdVetor >= i && idApresentador != apresentador[m].id; m = (i + qtdVetor) / 2)
@@ -143,14 +145,19 @@ bool verificarApresentador(struct apresentador apresentador[], int idApresentado
 
     if (idApresentador == apresentador[m].id)
     {
-        return true;
-    }
-    else
-    {
-        return false;
+        cout << "\tNome apresentador: " << apresentador[m].nome << endl;
+        cout << "\tDeseja confirmar a cidade ? [0 == nao/1 == sim]\n";
+        cin >> confirmar;
+        if (confirmar == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
-
 void lerEventos(struct evento evento[], int &contEvento, int qtdVetor, struct cidade cidade[], struct apresentador apresentador[])
 {
     system("cls");
@@ -212,7 +219,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetor, struct ci
         cin >> evento[i].precoUnitario;
         cout << "============================================\n\n";
     }
-    contEvento = contEvento + qtdEventos;
+    contEvento = qtdEventos;
 }
 
 int main()
@@ -235,8 +242,9 @@ int main()
         cout << "\t\t\t|Menu de opcoes|\n\n";
         cout << "\t\t[1] - Ler Cidades\n\n";
         cout << "\t\t[2] - Exibir Cidades\n\n";
-        // cout << "\t\t[3] - Exibir Cidades\n\n";
+        cout << "\t\t[3] - Exibir Cidades\n\n";
         cout << "\t\t[4] - Ler Apresentadores\n\n";
+        cout << "\t\t[5] - Ler Eventos\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
         fflush(stdin);
@@ -267,7 +275,7 @@ int main()
         }
         case '5':
         {
-            lerEventos(eventos, contEvento, CONTADOR, cidades, apresentadores);
+            lerEventos(eventos, contEvento, contCidade, cidades, apresentadores);
             break;
         }
         default:
