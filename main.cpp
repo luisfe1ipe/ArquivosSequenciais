@@ -86,12 +86,23 @@ void lerApresentadores(struct apresentador apresentador[], int &contApresentador
     contApresentador = qtdApresentadores;
 }
 
+void exibirApresentadores(struct apresentador apresentador[], int contApresentador)
+{
+    system("cls");
+    cout << "\t\tIMPRIMINDO APRESENTADORES\n\n";
+    for (int i = 0; i < contApresentador; i++)
+    {
+        cout << "ID: " << apresentador[i].id << endl;
+        cout << "Nome: " << apresentador[i].nome << endl;
+        cout << "============================================\n";
+    }
+}
+
 bool verificarCidade(struct cidade cidade[], int idCidade, int qtd)
 {
     int i = 0, qtdVetor = qtd;
     int m = (i + qtdVetor) / 2;
     int confirmar = 9;
-
 
     for (; qtdVetor >= i && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
     {
@@ -156,7 +167,9 @@ bool verificarApresentador(struct apresentador apresentador[], int idApresentado
         {
             return false;
         }
-    }else{
+    }
+    else
+    {
         return false;
     }
 }
@@ -248,7 +261,7 @@ int main()
         cout << "\t\t[3] FALTA - Inserir Cidades\n\n";
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[4] - Ler Apresentadores\n\n";
-        cout << "\t\t[5] FALTA - Exibir Apresentadores\n\n";
+        cout << "\t\t[5] - Exibir Apresentadores\n\n";
         cout << "\t\t[6] FALTA - Inserir Apresentadores\n\n";
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[7] - Ler Eventos\n\n";
@@ -280,6 +293,11 @@ int main()
         case '4':
         {
             lerApresentadores(apresentadores, contApresentador);
+            break;
+        }
+        case '5':
+        {
+            exibirApresentadores(apresentadores, contApresentador);
             break;
         }
         case '7':
