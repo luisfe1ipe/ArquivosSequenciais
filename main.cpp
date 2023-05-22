@@ -205,6 +205,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
                 cout << "Apresentador nao encontrado.";
             }
         }
+        x = 1;
         cout << "Limite de participantes: ";
         cin >> evento[i].limiteParticipantes;
         cout << "Quantidade de participantes: ";
@@ -281,7 +282,7 @@ int main()
             lerApresentadores(apresentadores, contApresentador);
             break;
         }
-        case '5':
+        case '7':
         {
             lerEventos(eventos, contEvento, contCidade, contApresentador, cidades, apresentadores);
             break;
