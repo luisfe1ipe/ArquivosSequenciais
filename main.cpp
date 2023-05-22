@@ -90,7 +90,7 @@ bool verificarCidade(struct cidade cidade[], int idCidade, int qtd)
 {
     int i = 0, qtdVetor = qtd;
     int m = (i + qtdVetor) / 2;
-    int confirmar;
+    int confirmar = 9;
 
 
     for (; qtdVetor >= i && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
@@ -133,13 +133,13 @@ bool verificarApresentador(struct apresentador apresentador[], int idApresentado
     int m = (i + qtdVetor) / 2;
     for (; qtdVetor >= i && idApresentador != apresentador[m].id; m = (i + qtdVetor) / 2)
     {
-        if (apresentador[m].id < idApresentador)
+        if (idApresentador > apresentador[m].id)
         {
-            qtdVetor = m - 1;
+            i = m + 1;
         }
         else
         {
-            i = m + 1;
+            qtdVetor = m - 1;
         }
     }
 
@@ -156,9 +156,11 @@ bool verificarApresentador(struct apresentador apresentador[], int idApresentado
         {
             return false;
         }
+    }else{
+        return false;
     }
 }
-void lerEventos(struct evento evento[], int &contEvento, int qtdVetor, struct cidade cidade[], struct apresentador apresentador[])
+void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[])
 {
     system("cls");
     cout << "\t\tLEITURA DE EVENTOS\n\n";
@@ -178,7 +180,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetor, struct ci
         {
             cout << "ID da cidade: ";
             cin >> idCidade;
-            if (verificarCidade(cidade, idCidade, qtdVetor) == true)
+            if (verificarCidade(cidade, idCidade, qtdVetorCidade) == true)
             {
                 evento[i].id_cidade = idCidade;
                 x = 0;
@@ -193,7 +195,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetor, struct ci
         {
             cout << "ID do apresentador: ";
             cin >> idApresentador;
-            if (verificarApresentador(apresentador, idApresentador, qtdVetor) == true)
+            if (verificarApresentador(apresentador, idApresentador, qtdVetorApresentador) == true)
             {
                 evento[i].id_apresentador = idApresentador;
                 x = 0;
@@ -275,7 +277,7 @@ int main()
         }
         case '5':
         {
-            lerEventos(eventos, contEvento, contCidade, cidades, apresentadores);
+            lerEventos(eventos, contEvento, contCidade, contApresentador, cidades, apresentadores);
             break;
         }
         default:
