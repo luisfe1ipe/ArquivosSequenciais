@@ -244,9 +244,15 @@ int main()
         cout << "\t\t\t|Menu de opcoes|\n\n";
         cout << "\t\t[1] - Ler Cidades\n\n";
         cout << "\t\t[2] - Exibir Cidades\n\n";
-        cout << "\t\t[3] - Exibir Cidades\n\n";
+        cout << "\t\t[3] FALTA - Inserir Cidades\n\n";
+        cout << "\t\t------------------------------\n\n";
         cout << "\t\t[4] - Ler Apresentadores\n\n";
-        cout << "\t\t[5] - Ler Eventos\n\n";
+        cout << "\t\t[5] FALTA - Exibir Apresentadores\n\n";
+        cout << "\t\t[6] FALTA - Inserir Apresentadores\n\n";
+        cout << "\t\t------------------------------\n\n";
+        cout << "\t\t[7] - Ler Eventos\n\n";
+        cout << "\t\t[8] FALTA - Exibir Eventos\n\n";
+        cout << "\t\t[9] FALTA - Inserir Eventos\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
         fflush(stdin);
