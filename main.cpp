@@ -173,6 +173,7 @@ bool verificarApresentador(struct apresentador apresentador[], int idApresentado
         return false;
     }
 }
+
 void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[])
 {
     system("cls");
@@ -238,6 +239,21 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
     contEvento = qtdEventos;
 }
 
+void exibirEventos(struct evento evento[], int contEvento)
+{
+    system("cls");
+    cout << "\t\tIMPRIMINDO EVENTOS\n\n";
+    for (int i = 0; i < contEvento; i++)
+    {
+        cout << "ID: " << evento[i].id << endl;
+        cout << "Nome: " << evento[i].desc << endl;
+        cout << "ID cidade: " << evento[i].id_cidade << endl;
+        cout << "ID apresentador: " << evento[i].id_apresentador << endl;
+        cout << "Limite de participantes: " << evento[i].limiteParticipantes << endl;
+        cout << "Quantidade de participantes: " << evento[i].qtdParticipantes << endl;
+    }
+}
+
 int main()
 {
     const int CONTADOR = 1000;
@@ -265,7 +281,7 @@ int main()
         cout << "\t\t[6] FALTA - Inserir Apresentadores\n\n";
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[7] - Ler Eventos\n\n";
-        cout << "\t\t[8] FALTA - Exibir Eventos\n\n";
+        cout << "\t\t[8] - Exibir Eventos\n\n";
         cout << "\t\t[9] FALTA - Inserir Eventos\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
@@ -303,6 +319,11 @@ int main()
         case '7':
         {
             lerEventos(eventos, contEvento, contCidade, contApresentador, cidades, apresentadores);
+            break;
+        }
+        case '8':
+        {
+            exibirEventos(eventos, contEvento);
             break;
         }
         default:
