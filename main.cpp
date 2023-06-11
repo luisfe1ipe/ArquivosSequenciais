@@ -176,6 +176,33 @@ int verificarCidade(struct cidade cidade[], int idCidade, int qtd)
     }
 }
 
+int verificarParticipante(struct participante participante[], int idParticipante, int qtd)
+{
+    int i = 0, qtdVetor = qtd;
+    int m = (i + qtdVetor) / 2;
+
+    for (; qtdVetor >= i && idParticipante != participante[m].id; m = (i + qtdVetor) / 2)
+    {
+        if (idParticipante > participante[m].id)
+        {
+            i = m + 1;
+        }
+        else
+        {
+            qtdVetor = m - 1;
+        }
+    }
+
+    if (idParticipante == participante[m].id)
+    {
+        return m;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 int verificarApresentador(struct apresentador apresentador[], int idApresentador, int qtd)
 {
     int i = 0, qtdVetor = qtd;
@@ -228,13 +255,10 @@ int verificarEvento(struct evento evento[], int idEvento, int qtd)
     }
 }
 
-void lerParticipantes(struct participante p[], int &contParticipante, struct evento e[], int qtdVetorEvento, struct cidade c[], int qtdVetorCidade, struct apresentador ap[], int qtdVetorApresentador)
+void lerParticipantes(struct participante p[], int &contParticipante)
 {
     system("cls");
     int qtdParticipantes = 0;
-    int x = 1;
-    int idEvento = 0;
-    int confirmacao = 9;
     cout << "Quantos participantes deseja cadastrar ? ";
     cin >> qtdParticipantes;
     for (int i = 0; i < qtdParticipantes; i++)
@@ -243,39 +267,7 @@ void lerParticipantes(struct participante p[], int &contParticipante, struct eve
         cin >> p[i].id;
         cout << "Nome do participante:";
         cin >> p[i].nome;
-        while (x != 0)
-        {
-            cout << "ID da do evento: ";
-            cin >> idEvento;
-            int indiceEvento = verificarEvento(e, idEvento, qtdVetorEvento);
-            if (indiceEvento != -1)
-            {
-                cout << "\t\tEvento encontrado!" << endl;
-                cout << "\tDescricao do evento: " << e[indiceEvento].desc << endl;
-                int indiceCidade = verificarCidade(c, e[indiceEvento].id_cidade, qtdVetorCidade);
-                cout << "\tCidade do evento: " << c[indiceCidade].nome << endl;
-                cout << "\tUF do evento: " << c[indiceCidade].uf << endl;
-                int indiceApresentador = verificarApresentador(ap, e[indiceEvento].id_apresentador, qtdVetorApresentador);
-                cout << "\tApresentador do evento: " << ap[indiceApresentador].nome << endl;
-                cout << "\tDeseja confirmar o evento ? (Nao = 0 / Sim = 1)";
-                cin >> confirmacao;
-                if (confirmacao == 1)
-                {
-                    p[i].id_evento = idEvento;
-                    x = 0;
-                }
-                else
-                {
-                    cout << "\tEvento nao confirmado. Digite novamente!\n";
-                }
-            }
-            else
-            {
-                cout << "\tEvento nao encontrado. Digite novamente!\n";
-            }
-        }
-        confirmacao = 9;
-        x = 1;
+        p[i].id_evento = 0;
         cout << "============================================\n\n";
         contParticipante = qtdParticipantes;
     }
@@ -465,6 +457,80 @@ void incluirEventos(struct evento evento[], int &contEventos, int contador, int 
 
     contEventos = k;
 }
+
+void inscricaoEvento(struct evento evento[], int &contEvento, struct participante participante[], int &contParticipante, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
+{
+    system("cls");
+    int x = 1, y = 1, idEvento = 0, idParticipante = 0, confirmacaoEvento = 9, confirmacaoParticipante = 9;
+    cout << "\tREALIZAR INSCRICAO NO EVENTO\n\n";
+
+    while (x != 0)
+    {
+        cout << "\nDigite o ID do evento para realizar a inscricao: ";
+        cin >> idEvento;
+
+        int indiceEvento = verificarEvento(evento, idEvento, contEvento);
+        if (indiceEvento != -1)
+        {
+            x = 0;
+            cout << "\t\tEvento encontrado!" << endl;
+            cout << "\t\nDescricao do evento: " << evento[indiceEvento].desc << endl;
+            int indiceCidade = verificarCidade(cidade, evento[indiceEvento].id_cidade, contCidade);
+            cout << "\tCidade do evento: " << cidade[indiceCidade].nome << endl;
+            int indiceApresentador = verificarApresentador(apresentador, evento[indiceEvento].id_apresentador, contApresentador);
+            cout << "\tApresentador do evento: " << apresentador[indiceApresentador].nome << endl;
+            cout << "\t\nDeseja confirmar o evento ? (Nao = 0 / Sim = 1)";
+            cin >> confirmacaoEvento;
+            if (confirmacaoEvento == 1)
+            {
+                x = 0;
+                if (evento[indiceEvento].limiteParticipantes > evento[indiceCidade].qtdParticipantes)
+                {
+                    cout << "\nDigite o ID do participante: ";
+                    cin >> idParticipante;
+                    int indiceParticipante = verificarParticipante(participante, idParticipante, contParticipante);
+                    while (y != 0)
+                    {
+                        if (indiceParticipante != -1)
+                        {
+                            cout << "\t\tParticipante encontrado!" << endl;
+                            cout << "\tNome do participante: " << participante[indiceParticipante].nome << endl;
+                            cout << "\t\nDeseja confirmar o participante ? (Nao = 0 / Sim = 1)";
+                            cin >> confirmacaoParticipante;
+                            if (confirmacaoParticipante == 1)
+                            {
+                                participante[indiceParticipante].id_evento = evento[indiceEvento].id;
+                                evento[indiceEvento].qtdParticipantes++;
+                                y = 0;
+                            }
+                            else
+                            {
+                                cout << "\tParticipante nao confirmado. Digite novamente!";
+                            }
+                        }
+                        else
+                        {
+                            cout << "\tParticipante nao encontrado. Digite novamente!" << endl;
+                        }
+                    }
+                }
+                else
+                {
+                    cout << "\tO evento atingiu o limite maximo de participantes." << endl;
+                }
+            }
+            else
+            {
+                cout << "\tEvento nao confirmado. Digite novamente!";
+            }
+        }
+        else
+        {
+            cout << "\tEvento nao encontrado. Digite novamente!" << endl;
+        }
+    }
+}
+
 int main()
 {
     const int CONTADOR = 1000;
@@ -500,6 +566,8 @@ int main()
         cout << "\t\t[10] - Ler Eventos\n\n";
         cout << "\t\t[11] - Exibir Eventos\n\n";
         cout << "\t\t[12] - Inserir Eventos\n\n";
+        cout << "\t\t------------------------------\n\n";
+        cout << "\t\t[13] - Realizar inscricao evento\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
         fflush(stdin);
@@ -556,6 +624,11 @@ int main()
         case 12:
         {
             incluirEventos(eventos, contEvento, CONTADOR, contCidade, contApresentador, cidades, apresentadores);
+            break;
+        }
+        case 13:
+        {
+            inscricaoEvento(eventos, contEvento, participantes, contParticipante, cidades, contCidade, apresentadores, contApresentador);
             break;
         }
         default:
