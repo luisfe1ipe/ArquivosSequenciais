@@ -365,21 +365,59 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
     contEvento = qtdEventos;
 }
 
-void exibirEventos(struct evento evento[], int contEvento)
+void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
 {
     system("cls");
+    int x = 1, idEvento = 0;
+    while (x != 0)
+    {
+        cout << "\nDigite o ID do evento para exibi-lo: ";
+        cin >> idEvento;
+
+        int indiceEvento = verificarEvento(evento, idEvento, contEvento);
+        if (indiceEvento != -1)
+        {
+            cout << "ID: " << evento[indiceEvento].id << endl;
+            cout << "Descricao: " << evento[indiceEvento].desc << endl;
+            int indiceCidade = verificarCidade(cidade, evento[indiceEvento].id_cidade, contCidade);
+            cout << "Cidade: " << cidade[indiceCidade].nome << endl;
+            int indiceApresentador = verificarApresentador(apresentador, evento[indiceEvento].id_apresentador, contApresentador);
+            cout << "Apresentador: " << apresentador[indiceApresentador].nome << endl;
+            cout << "Limite de participantes: " << evento[indiceEvento].limiteParticipantes << endl;
+            cout << "Quantidade de participantes: " << evento[indiceEvento].qtdParticipantes << endl;
+            cout << "Preco unitario: " << evento[indiceEvento].precoUnitario << endl;
+            cout << "Valor total: " << evento[indiceEvento].precoUnitario * evento[indiceEvento].qtdParticipantes;
+            x = 0;
+        }
+        else
+        {
+            cout << "Evento nao encontrado. Digite novamente!";
+        }
+    }
+}
+
+void exibirEventos(struct evento evento[], int contEvento, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
+{
+    system("cls");
+    float valorTotal = 0, valorTotalEvento = 0;
     cout << "\t\tIMPRIMINDO EVENTOS\n\n";
     for (int i = 0; i < contEvento; i++)
     {
         cout << "ID: " << evento[i].id << endl;
-        cout << "Nome: " << evento[i].desc << endl;
-        cout << "ID cidade: " << evento[i].id_cidade << endl;
-        cout << "ID apresentador: " << evento[i].id_apresentador << endl;
+        cout << "Descricao: " << evento[i].desc << endl;
+        int indiceCidade = verificarCidade(cidade, evento[i].id_cidade, contCidade);
+        cout << "Cidade: " << cidade[indiceCidade].nome << endl;
+        int indiceApresentador = verificarApresentador(apresentador, evento[i].id_apresentador, contApresentador);
+        cout << "Apresentador: " << apresentador[indiceApresentador].nome << endl;
         cout << "Limite de participantes: " << evento[i].limiteParticipantes << endl;
         cout << "Quantidade de participantes: " << evento[i].qtdParticipantes << endl;
         cout << "Preco unitario: " << evento[i].precoUnitario << endl;
+        valorTotalEvento = evento[i].precoUnitario * evento[i].qtdParticipantes; 
+        cout << "Valor total do evento: " << valorTotalEvento;
+        valorTotal = valorTotal + valorTotalEvento;
         cout << "==========================================================\n";
     }
+    cout << "O valor total de todos eventos: " << valorTotal;
 }
 
 void incluirEventos(struct evento evento[], int &contEventos, int contador, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[])
@@ -608,7 +646,7 @@ int main()
         }
         case 7:
         {
-            lerParticipantes(participantes, contParticipante, eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
+            lerParticipantes(participantes, contParticipante);
             break;
         }
         case 10:
@@ -618,7 +656,7 @@ int main()
         }
         case 11:
         {
-            exibirEventos(eventos, contEvento);
+            exibirEventos(eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
             break;
         }
         case 12:
@@ -629,6 +667,11 @@ int main()
         case 13:
         {
             inscricaoEvento(eventos, contEvento, participantes, contParticipante, cidades, contCidade, apresentadores, contApresentador);
+            break;
+        }
+        case 14:
+        {
+            exibirUmEvento(eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
             break;
         }
         default:
