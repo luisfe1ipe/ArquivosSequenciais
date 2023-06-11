@@ -86,16 +86,67 @@ void lerApresentadores(struct apresentador apresentador[], int &contApresentador
     contApresentador = qtdApresentadores;
 }
 
-void exibirApresentadores(struct apresentador apresentador[], int contApresentador)
+void exibirApresentadores(struct apresentador apresentadores[], int contApresentadores)
 {
     system("cls");
     cout << "\t\tIMPRIMINDO APRESENTADORES\n\n";
-    for (int i = 0; i < contApresentador; i++)
+    for (int i = 0; i < contApresentadores; i++)
     {
-        cout << "ID: " << apresentador[i].id << endl;
-        cout << "Nome: " << apresentador[i].nome << endl;
+        cout << "ID: " << apresentadores[i].id << endl;
+        cout << "Nome: " << apresentadores[i].nome << endl;
         cout << "============================================\n";
     }
+}
+
+void incluirApresentadores(struct apresentador apresentadores[], int &contApresentadores, int contador)
+{
+    system("cls");
+    struct apresentador inclusaoApresentadores[contador];
+    int contInclusaoApresentadores = 0;
+    lerApresentadores(inclusaoApresentadores, contInclusaoApresentadores);
+
+    struct apresentador atApresentadores[contador];
+
+    int i = 0, j = 0, k = 0;
+    for (; i < contApresentadores && j < contInclusaoApresentadores; k++)
+    {
+        if (apresentadores[i].id < inclusaoApresentadores[j].id)
+        {
+            atApresentadores[k].id = apresentadores[i].id;
+            strcpy(atApresentadores[k].nome, apresentadores[i].nome);
+            i++;
+        }
+        else
+        {
+            atApresentadores[k].id = inclusaoApresentadores[j].id;
+            strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
+            j++;
+        }
+    }
+
+    while (i < contApresentadores)
+    {
+        atApresentadores[k].id = apresentadores[i].id;
+        strcpy(atApresentadores[k].nome, apresentadores[i].nome);
+        i++;
+        k++;
+    }
+
+    while (j < contInclusaoApresentadores)
+    {
+        atApresentadores[k].id = inclusaoApresentadores[j].id;
+        strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
+        j++;
+        k++;
+    }
+
+    for (int i = 0; i < k; i++)
+    {
+        apresentadores[i].id = atApresentadores[i].id;
+        strcpy(apresentadores[i].nome, atApresentadores[i].nome);
+    }
+
+    contApresentadores = k;
 }
 
 int verificarCidade(struct cidade cidade[], int idCidade, int qtd)
@@ -255,7 +306,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
             int indiceCidade = verificarCidade(cidade, idCidade, qtdVetorCidade);
             if (indiceCidade != -1)
             {
-                 cout << "\t\tCidade encontrada!" << endl;
+                cout << "\t\tCidade encontrada!" << endl;
                 cout << "\tNome da cidade: " << cidade[indiceCidade].nome << endl;
                 cout << "\tDeseja confirmar a cidade ? (Nao = 0 / Sim = 1)";
                 cin >> confirmacao;
@@ -364,7 +415,7 @@ int main()
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[4] - Ler Apresentadores\n\n";
         cout << "\t\t[5] - Exibir Apresentadores\n\n";
-        cout << "\t\t[6] FALTA - Inserir Apresentadores\n\n";
+        cout << "\t\t[6] - Inserir Apresentadores\n\n";
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[7] FALTA - Ler Participantes\n\n";
         cout << "\t\t[8] FALTA - Exibir Participantes\n\n";
@@ -404,6 +455,11 @@ int main()
         case 5:
         {
             exibirApresentadores(apresentadores, contApresentador);
+            break;
+        }
+        case 6:
+        {
+            incluirApresentadores(apresentadores, contApresentador, CONTADOR);
             break;
         }
         case 7:
