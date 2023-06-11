@@ -385,10 +385,86 @@ void exibirEventos(struct evento evento[], int contEvento)
         cout << "ID apresentador: " << evento[i].id_apresentador << endl;
         cout << "Limite de participantes: " << evento[i].limiteParticipantes << endl;
         cout << "Quantidade de participantes: " << evento[i].qtdParticipantes << endl;
+        cout << "Preco unitario: " << evento[i].precoUnitario << endl;
         cout << "==========================================================\n";
     }
 }
 
+void incluirEventos(struct evento evento[], int &contEventos, int contador, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[])
+{
+    system("cls");
+    struct evento inclusaoEvento[contador];
+    int contInclusaoEvento = 0;
+    lerEventos(inclusaoEvento, contInclusaoEvento, qtdVetorCidade, qtdVetorApresentador, cidade, apresentador);
+
+    struct evento atEvento[contador];
+
+    int i = 0, k = 0, j = 0;
+    for (; i < contEventos && j < contInclusaoEvento; k++)
+    {
+        if (evento[i].id < inclusaoEvento[j].id)
+        {
+            atEvento[k].id = evento[i].id;
+            strcpy(atEvento[k].desc, evento[i].desc);
+            atEvento[k].id_cidade = evento[i].id_cidade;
+            atEvento[k].id_apresentador = evento[i].id_apresentador;
+            atEvento[k].qtdParticipantes = evento[i].qtdParticipantes;
+            atEvento[k].limiteParticipantes = evento[i].limiteParticipantes;
+            atEvento[k].precoUnitario = evento[i].precoUnitario;
+            i++;
+        }
+        else
+        {
+            atEvento[k].id = inclusaoEvento[j].id;
+            strcpy(atEvento[k].desc, inclusaoEvento[j].desc);
+            atEvento[k].id_cidade = inclusaoEvento[j].id_cidade;
+            atEvento[k].id_apresentador = inclusaoEvento[j].id_apresentador;
+            atEvento[k].qtdParticipantes = inclusaoEvento[j].qtdParticipantes;
+            atEvento[k].limiteParticipantes = inclusaoEvento[j].limiteParticipantes;
+            atEvento[k].precoUnitario = inclusaoEvento[j].precoUnitario;
+            j++;
+        }
+    }
+
+    while (i < contEventos)
+    {
+        atEvento[k].id = evento[i].id;
+        strcpy(atEvento[k].desc, evento[i].desc);
+        atEvento[k].id_cidade = evento[i].id_cidade;
+        atEvento[k].id_apresentador = evento[i].id_apresentador;
+        atEvento[k].qtdParticipantes = evento[i].qtdParticipantes;
+        atEvento[k].limiteParticipantes = evento[i].limiteParticipantes;
+        atEvento[k].precoUnitario = evento[i].precoUnitario;
+        i++;
+        k++;
+    }
+
+    while (j < contInclusaoEvento)
+    {
+        atEvento[k].id = inclusaoEvento[j].id;
+        strcpy(atEvento[k].desc, inclusaoEvento[j].desc);
+        atEvento[k].id_cidade = inclusaoEvento[j].id_cidade;
+        atEvento[k].id_apresentador = inclusaoEvento[j].id_apresentador;
+        atEvento[k].qtdParticipantes = inclusaoEvento[j].qtdParticipantes;
+        atEvento[k].limiteParticipantes = inclusaoEvento[j].limiteParticipantes;
+        atEvento[k].precoUnitario = inclusaoEvento[j].precoUnitario;
+        j++;
+        k++;
+    }
+
+    for (int i = 0; i < k; i++)
+    {
+        evento[i].id = atEvento[i].id;
+        strcpy(evento[i].desc, atEvento[i].desc);
+        evento[i].id_cidade = atEvento[i].id_cidade;
+        evento[i].id_apresentador = atEvento[i].id_apresentador;
+        evento[i].qtdParticipantes = atEvento[i].qtdParticipantes;
+        evento[i].limiteParticipantes = atEvento[i].limiteParticipantes;
+        evento[i].precoUnitario = atEvento[i].precoUnitario;
+    }
+
+    contEventos = k;
+}
 int main()
 {
     const int CONTADOR = 1000;
@@ -423,7 +499,7 @@ int main()
         cout << "\t\t------------------------------\n\n";
         cout << "\t\t[10] - Ler Eventos\n\n";
         cout << "\t\t[11] - Exibir Eventos\n\n";
-        cout << "\t\t[12] FALTA - Inserir Eventos\n\n";
+        cout << "\t\t[12] - Inserir Eventos\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
         fflush(stdin);
@@ -475,6 +551,11 @@ int main()
         case 11:
         {
             exibirEventos(eventos, contEvento);
+            break;
+        }
+        case 12:
+        {
+            incluirEventos(eventos, contEvento, CONTADOR, contCidade, contApresentador, cidades, apresentadores);
             break;
         }
         default:
