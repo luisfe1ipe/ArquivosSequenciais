@@ -103,14 +103,19 @@ void lerCidades(struct cidade cidade[], int &contCidade)
     int qtdCidade = 0;
     cout << "Quantas cidade deseja cadastrar ? ";
     cin >> qtdCidade;
+    cin.ignore();
     for (int i = 0; i < qtdCidade; i++)
     {
-        cout << "ID da cidade:";
+        cout << "ID da cidade: ";
         cin >> cidade[i].id;
-        cout << "Nome da cidade:";
-        cin >> cidade[i].nome;
-        cout << "Nome do UF:";
-        cin >> cidade[i].uf;
+        cin.ignore();
+
+        cout << "Nome da cidade: ";
+        gets(cidade[i].nome);
+
+        cout << "Nome do UF: ";
+        gets(cidade[i].uf);
+
         cout << "============================================\n\n";
     }
     contCidade = qtdCidade;
@@ -123,12 +128,14 @@ void lerApresentadores(struct apresentador apresentador[], int &contApresentador
     int qtdApresentadores = 0;
     cout << "Quantos apresentadores deseja cadastrar ? ";
     cin >> qtdApresentadores;
+    cin.ignore();
     for (int i = 0; i < qtdApresentadores; i++)
     {
         cout << "ID: ";
         cin >> apresentador[i].id;
+        cin.ignore();
         cout << "Nome: ";
-        cin >> apresentador[i].nome;
+        gets(apresentador[i].nome);
         cout << "============================================\n";
     }
     contApresentador = qtdApresentadores;
@@ -140,12 +147,14 @@ void lerParticipantes(struct participante p[], int &contParticipante)
     int qtdParticipantes = 0;
     cout << "Quantos participantes deseja cadastrar ? ";
     cin >> qtdParticipantes;
+    cin.ignore();
     for (int i = 0; i < qtdParticipantes; i++)
     {
         cout << "ID da participante:";
         cin >> p[i].id;
+        cin.ignore();
         cout << "Nome do participante:";
-        cin >> p[i].nome;
+        gets(p[i].nome);
         p[i].id_evento = 0;
         cout << "============================================\n\n";
         contParticipante = qtdParticipantes;
@@ -164,16 +173,19 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
     int confirmacao = 9;
     cout << "Quantos eventos deseja cadastrar ? ";
     cin >> qtdEventos;
+    cin.ignore();
     for (int i = 0; i < qtdEventos; i++)
     {
         cout << "ID: ";
         cin >> evento[i].id;
+        cin.ignore();
         cout << "Nome: ";
-        cin >> evento[i].desc;
+        gets(evento[i].desc);
         while (x != 0)
         {
             cout << "ID da cidade: ";
             cin >> idCidade;
+            cin.ignore();
             int indiceCidade = verificarCidade(cidade, idCidade, qtdVetorCidade);
             if (indiceCidade != -1)
             {
@@ -202,6 +214,7 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
         {
             cout << "ID do apresentador: ";
             cin >> idApresentador;
+            cin.ignore();
             int indiceApresentador = verificarApresentador(apresentador, idApresentador, qtdVetorApresentador);
             if (indiceApresentador != -1)
             {
@@ -597,7 +610,7 @@ void inscricaoEvento(struct evento evento[], int &contEvento, struct participant
         {
             x = 0;
             cout << "\t\tEvento encontrado!" << endl;
-            cout << "\t\nDescricao do evento: " << evento[indiceEvento].desc << endl;
+            cout << "\tDescricao do evento: " << evento[indiceEvento].desc << endl;
             int indiceCidade = verificarCidade(cidade, evento[indiceEvento].id_cidade, contCidade);
             cout << "\tCidade do evento: " << cidade[indiceCidade].nome << endl;
             int indiceApresentador = verificarApresentador(apresentador, evento[indiceEvento].id_apresentador, contApresentador);
@@ -607,7 +620,7 @@ void inscricaoEvento(struct evento evento[], int &contEvento, struct participant
             if (confirmacaoEvento == 1)
             {
                 x = 0;
-                if (evento[indiceEvento].limiteParticipantes > evento[indiceCidade].qtdParticipantes)
+                if (evento[indiceEvento].qtdParticipantes < evento[indiceEvento].limiteParticipantes)
                 {
                     cout << "\nDigite o ID do participante: ";
                     cin >> idParticipante;
@@ -624,6 +637,7 @@ void inscricaoEvento(struct evento evento[], int &contEvento, struct participant
                             {
                                 participante[indiceParticipante].id_evento = evento[indiceEvento].id;
                                 evento[indiceEvento].qtdParticipantes++;
+                                cout << "Inscricao realizada com sucesso!" << endl;
                                 y = 0;
                             }
                             else
@@ -639,7 +653,7 @@ void inscricaoEvento(struct evento evento[], int &contEvento, struct participant
                 }
                 else
                 {
-                    cout << "\tO evento atingiu o limite maximo de participantes." << endl;
+                    cout << "\t\nO evento atingiu o limite maximo de participantes." << endl;
                 }
             }
             else
