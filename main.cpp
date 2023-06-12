@@ -5,6 +5,11 @@
 
 using namespace std;
 
+/*
+
+    STRUCTS
+
+*/
 struct cidade
 {
     int id;
@@ -36,6 +41,62 @@ struct participante
     int id_evento;
 };
 
+/*
+
+    PROTÓTIPO DAS FUNÇÕES - LEITURA
+
+*/
+
+void lerCidades(struct cidade cidade[], int &contCidade);
+void lerApresentadores(struct apresentador apresentador[], int &contApresentador);
+void lerParticipantes(struct participantes participantes[], int &contParticipante);
+void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[]);
+
+/*
+
+    PROTÓTIPO DAS FUNÇÕES - EXIBIR
+
+*/
+
+void exibirCidades(struct cidade cidade[], int contCidade);
+void exibirApresentadores(struct apresentador apresentadores[], int contApresentadores);
+void exibirEventos(struct evento evento[], int contEvento, struct cidade cidade[], int contCidade, struct apresentador apresentador[], int contApresentador);
+void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade[], int contCidade, struct apresentador apresentador[], int contApresentador);
+
+/*
+
+    PROTÓTIPO DAS FUNÇÕES - BUSCA BINARIA
+
+*/
+
+int verificarCidade(struct cidade cidade[], int idCidade, int qtd);
+int verificarParticipante(struct participante participante[], int idParticipante, int qtd);
+int verificarApresentador(struct apresentador apresentador[], int idApresentador, int qtd);
+int verificarEvento(struct evento evento[], int idEvento, int qtd);
+
+/*
+
+    PROTÓTIPO DAS FUNÇÕES - INCLUSÃO
+
+*/
+
+void incluirApresentadores(struct apresentador apresentadores[], int &contApresentadores, int contador);
+void incluirEventos(struct evento evento[], int &contEventos, int contador, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[]);
+
+/*
+
+    PROTÓTIPO DAS FUNÇÕES - OUTROS
+
+*/
+
+void inscricaoEvento(struct evento evento[], int &contEvento, struct participante participante[], int &contParticipante, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador);
+
+/*
+
+    ----------------------- FUNÇÕES LEITURA -----------------------
+
+*/
+
 void lerCidades(struct cidade cidade[], int &contCidade)
 {
     system("cls");
@@ -55,19 +116,6 @@ void lerCidades(struct cidade cidade[], int &contCidade)
     contCidade = qtdCidade;
 }
 
-void exibirCidades(struct cidade cidade[], int contCidade)
-{
-    system("cls");
-    cout << "\t\tIMPRIMINDO CIDADES\n\n";
-    for (int i = 0; i < contCidade; i++)
-    {
-        cout << "ID: " << cidade[i].id << endl;
-        cout << "Nome: " << cidade[i].nome << endl;
-        cout << "UF: " << cidade[i].uf << endl;
-        cout << "============================================\n";
-    }
-}
-
 void lerApresentadores(struct apresentador apresentador[], int &contApresentador)
 {
     system("cls");
@@ -84,175 +132,6 @@ void lerApresentadores(struct apresentador apresentador[], int &contApresentador
         cout << "============================================\n";
     }
     contApresentador = qtdApresentadores;
-}
-
-void exibirApresentadores(struct apresentador apresentadores[], int contApresentadores)
-{
-    system("cls");
-    cout << "\t\tIMPRIMINDO APRESENTADORES\n\n";
-    for (int i = 0; i < contApresentadores; i++)
-    {
-        cout << "ID: " << apresentadores[i].id << endl;
-        cout << "Nome: " << apresentadores[i].nome << endl;
-        cout << "============================================\n";
-    }
-}
-
-void incluirApresentadores(struct apresentador apresentadores[], int &contApresentadores, int contador)
-{
-    system("cls");
-    struct apresentador inclusaoApresentadores[contador];
-    int contInclusaoApresentadores = 0;
-    lerApresentadores(inclusaoApresentadores, contInclusaoApresentadores);
-
-    struct apresentador atApresentadores[contador];
-
-    int i = 0, j = 0, k = 0;
-    for (; i < contApresentadores && j < contInclusaoApresentadores; k++)
-    {
-        if (apresentadores[i].id < inclusaoApresentadores[j].id)
-        {
-            atApresentadores[k].id = apresentadores[i].id;
-            strcpy(atApresentadores[k].nome, apresentadores[i].nome);
-            i++;
-        }
-        else
-        {
-            atApresentadores[k].id = inclusaoApresentadores[j].id;
-            strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
-            j++;
-        }
-    }
-
-    while (i < contApresentadores)
-    {
-        atApresentadores[k].id = apresentadores[i].id;
-        strcpy(atApresentadores[k].nome, apresentadores[i].nome);
-        i++;
-        k++;
-    }
-
-    while (j < contInclusaoApresentadores)
-    {
-        atApresentadores[k].id = inclusaoApresentadores[j].id;
-        strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
-        j++;
-        k++;
-    }
-
-    for (int i = 0; i < k; i++)
-    {
-        apresentadores[i].id = atApresentadores[i].id;
-        strcpy(apresentadores[i].nome, atApresentadores[i].nome);
-    }
-
-    contApresentadores = k;
-}
-
-int verificarCidade(struct cidade cidade[], int idCidade, int qtd)
-{
-    int i = 0, qtdVetor = qtd;
-    int m = (i + qtdVetor) / 2;
-
-    for (; qtdVetor >= i && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
-    {
-        if (idCidade > cidade[m].id)
-        {
-            i = m + 1;
-        }
-        else
-        {
-            qtdVetor = m - 1;
-        }
-    }
-
-    if (idCidade == cidade[m].id)
-    {
-        return m;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-int verificarParticipante(struct participante participante[], int idParticipante, int qtd)
-{
-    int i = 0, qtdVetor = qtd;
-    int m = (i + qtdVetor) / 2;
-
-    for (; qtdVetor >= i && idParticipante != participante[m].id; m = (i + qtdVetor) / 2)
-    {
-        if (idParticipante > participante[m].id)
-        {
-            i = m + 1;
-        }
-        else
-        {
-            qtdVetor = m - 1;
-        }
-    }
-
-    if (idParticipante == participante[m].id)
-    {
-        return m;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-int verificarApresentador(struct apresentador apresentador[], int idApresentador, int qtd)
-{
-    int i = 0, qtdVetor = qtd;
-    int m = (i + qtdVetor) / 2;
-    for (; qtdVetor >= i && idApresentador != apresentador[m].id; m = (i + qtdVetor) / 2)
-    {
-        if (idApresentador > apresentador[m].id)
-        {
-            i = m + 1;
-        }
-        else
-        {
-            qtdVetor = m - 1;
-        }
-    }
-
-    if (idApresentador == apresentador[m].id)
-    {
-        return m;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-int verificarEvento(struct evento evento[], int idEvento, int qtd)
-{
-    int i = 0, qtdVetor = qtd;
-    int m = (i + qtdVetor) / 2;
-    for (; qtdVetor >= i && idEvento != evento[m].id; m = (i + qtdVetor) / 2)
-    {
-        if (idEvento > evento[m].id)
-        {
-            i = m + 1;
-        }
-        else
-        {
-            qtdVetor = m - 1;
-        }
-    }
-
-    if (idEvento == evento[m].id)
-    {
-        return m;
-    }
-    else
-    {
-        return -1;
-    }
 }
 
 void lerParticipantes(struct participante p[], int &contParticipante)
@@ -365,7 +244,26 @@ void lerEventos(struct evento evento[], int &contEvento, int qtdVetorCidade, int
     contEvento = qtdEventos;
 }
 
-void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
+/*
+
+    ----------------------- FUNÇÕES EXIBIR -----------------------
+
+*/
+
+void exibirCidades(struct cidade cidade[], int contCidade)
+{
+    system("cls");
+    cout << "\t\tIMPRIMINDO CIDADES\n\n";
+    for (int i = 0; i < contCidade; i++)
+    {
+        cout << "ID: " << cidade[i].id << endl;
+        cout << "Nome: " << cidade[i].nome << endl;
+        cout << "UF: " << cidade[i].uf << endl;
+        cout << "============================================\n";
+    }
+}
+
+void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade[], int contCidade, struct apresentador apresentador[], int contApresentador)
 {
     system("cls");
     int x = 1, idEvento = 0;
@@ -385,8 +283,8 @@ void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade
             cout << "Apresentador: " << apresentador[indiceApresentador].nome << endl;
             cout << "Limite de participantes: " << evento[indiceEvento].limiteParticipantes << endl;
             cout << "Quantidade de participantes: " << evento[indiceEvento].qtdParticipantes << endl;
-            cout << "Preco unitario: " << evento[indiceEvento].precoUnitario << endl;
-            cout << "Valor total: " << evento[indiceEvento].precoUnitario * evento[indiceEvento].qtdParticipantes;
+            cout << "Preco unitario: " << evento[indiceEvento].precoUnitario << " reais" << endl;
+            cout << "Valor total: " << evento[indiceEvento].precoUnitario * evento[indiceEvento].qtdParticipantes << " reais" << endl;
             x = 0;
         }
         else
@@ -396,7 +294,19 @@ void exibirUmEvento(struct evento evento[], int contEvento, struct cidade cidade
     }
 }
 
-void exibirEventos(struct evento evento[], int contEvento, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
+void exibirApresentadores(struct apresentador apresentadores[], int contApresentadores)
+{
+    system("cls");
+    cout << "\t\tIMPRIMINDO APRESENTADORES\n\n";
+    for (int i = 0; i < contApresentadores; i++)
+    {
+        cout << "ID: " << apresentadores[i].id << endl;
+        cout << "Nome: " << apresentadores[i].nome << endl;
+        cout << "============================================\n";
+    }
+}
+
+void exibirEventos(struct evento evento[], int contEvento, struct cidade cidade[], int contCidade, struct apresentador apresentador[], int contApresentador)
 {
     system("cls");
     float valorTotal = 0, valorTotalEvento = 0;
@@ -412,12 +322,181 @@ void exibirEventos(struct evento evento[], int contEvento, struct cidade cidade[
         cout << "Limite de participantes: " << evento[i].limiteParticipantes << endl;
         cout << "Quantidade de participantes: " << evento[i].qtdParticipantes << endl;
         cout << "Preco unitario: " << evento[i].precoUnitario << endl;
-        valorTotalEvento = evento[i].precoUnitario * evento[i].qtdParticipantes; 
-        cout << "Valor total do evento: " << valorTotalEvento;
+        valorTotalEvento = evento[i].precoUnitario * evento[i].qtdParticipantes;
+        cout << "Valor total do evento: " << valorTotalEvento << " reais" << endl;
         valorTotal = valorTotal + valorTotalEvento;
         cout << "==========================================================\n";
     }
-    cout << "O valor total de todos eventos: " << valorTotal;
+    cout << "O valor total de todos eventos: " << valorTotal << " reais" << endl;
+}
+
+/*
+
+    ----------------------- FUNÇÕES BUSCA BINARIA -----------------------
+
+*/
+
+int verificarCidade(struct cidade cidade[], int idCidade, int qtd)
+{
+    int i = 0, qtdVetor = qtd;
+    int m = (i + qtdVetor) / 2;
+
+    for (; qtdVetor >= i && idCidade != cidade[m].id; m = (i + qtdVetor) / 2)
+    {
+        if (idCidade > cidade[m].id)
+        {
+            i = m + 1;
+        }
+        else
+        {
+            qtdVetor = m - 1;
+        }
+    }
+
+    if (idCidade == cidade[m].id)
+    {
+        return m;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int verificarParticipante(struct participante participante[], int idParticipante, int qtd)
+{
+    int i = 0, qtdVetor = qtd;
+    int m = (i + qtdVetor) / 2;
+
+    for (; qtdVetor >= i && idParticipante != participante[m].id; m = (i + qtdVetor) / 2)
+    {
+        if (idParticipante > participante[m].id)
+        {
+            i = m + 1;
+        }
+        else
+        {
+            qtdVetor = m - 1;
+        }
+    }
+
+    if (idParticipante == participante[m].id)
+    {
+        return m;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int verificarApresentador(struct apresentador apresentador[], int idApresentador, int qtd)
+{
+    int i = 0, qtdVetor = qtd;
+    int m = (i + qtdVetor) / 2;
+    for (; qtdVetor >= i && idApresentador != apresentador[m].id; m = (i + qtdVetor) / 2)
+    {
+        if (idApresentador > apresentador[m].id)
+        {
+            i = m + 1;
+        }
+        else
+        {
+            qtdVetor = m - 1;
+        }
+    }
+
+    if (idApresentador == apresentador[m].id)
+    {
+        return m;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int verificarEvento(struct evento evento[], int idEvento, int qtd)
+{
+    int i = 0, qtdVetor = qtd;
+    int m = (i + qtdVetor) / 2;
+    for (; qtdVetor >= i && idEvento != evento[m].id; m = (i + qtdVetor) / 2)
+    {
+        if (idEvento > evento[m].id)
+        {
+            i = m + 1;
+        }
+        else
+        {
+            qtdVetor = m - 1;
+        }
+    }
+
+    if (idEvento == evento[m].id)
+    {
+        return m;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+/*
+
+    ----------------------- FUNÇÕES INCLUSÃO -----------------------
+
+*/
+
+void incluirApresentadores(struct apresentador apresentadores[], int &contApresentadores, int contador)
+{
+    system("cls");
+    struct apresentador inclusaoApresentadores[contador];
+    int contInclusaoApresentadores = 0;
+    lerApresentadores(inclusaoApresentadores, contInclusaoApresentadores);
+
+    struct apresentador atApresentadores[contador];
+
+    int i = 0, j = 0, k = 0;
+    for (; i < contApresentadores && j < contInclusaoApresentadores; k++)
+    {
+        if (apresentadores[i].id < inclusaoApresentadores[j].id)
+        {
+            atApresentadores[k].id = apresentadores[i].id;
+            strcpy(atApresentadores[k].nome, apresentadores[i].nome);
+            i++;
+        }
+        else
+        {
+            atApresentadores[k].id = inclusaoApresentadores[j].id;
+            strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
+            j++;
+        }
+    }
+
+    while (i < contApresentadores)
+    {
+        atApresentadores[k].id = apresentadores[i].id;
+        strcpy(atApresentadores[k].nome, apresentadores[i].nome);
+        i++;
+        k++;
+    }
+
+    while (j < contInclusaoApresentadores)
+    {
+        atApresentadores[k].id = inclusaoApresentadores[j].id;
+        strcpy(atApresentadores[k].nome, inclusaoApresentadores[j].nome);
+        j++;
+        k++;
+    }
+
+    for (int i = 0; i < k; i++)
+    {
+        apresentadores[i].id = atApresentadores[i].id;
+        strcpy(apresentadores[i].nome, atApresentadores[i].nome);
+    }
+
+    contApresentadores = k;
 }
 
 void incluirEventos(struct evento evento[], int &contEventos, int contador, int qtdVetorCidade, int qtdVetorApresentador, struct cidade cidade[], struct apresentador apresentador[])
@@ -495,6 +574,12 @@ void incluirEventos(struct evento evento[], int &contEventos, int contador, int 
 
     contEventos = k;
 }
+
+/*
+
+    ----------------------- FUNÇÕES OUTROS -----------------------
+
+*/
 
 void inscricaoEvento(struct evento evento[], int &contEvento, struct participante participante[], int &contParticipante, struct cidade cidade[], int &contCidade, struct apresentador apresentador[], int &contApresentador)
 {
@@ -588,24 +673,23 @@ int main()
         system("cls");
         cout << "\t\tArquivos Sequenciais\n\n";
 
-        cout << "\t\t\t|Menu de opcoes|\n\n";
+        cout << "\t\t\t|Menu de opcoes|\n\n\n";
+        cout << "\t\t| LEITURA |\n\n";
         cout << "\t\t[1] - Ler Cidades\n\n";
-        cout << "\t\t[2] - Exibir Cidades\n\n";
-        cout << "\t\t[3] FALTA - Inserir Cidades\n\n";
+        cout << "\t\t[2] - Ler Apresentadores\n\n";
+        cout << "\t\t[3] - Ler Participantes\n\n";
+        cout << "\t\t[4] - Ler Eventos\n\n";
+        cout << "\t\t------------------------------\n\n\n";
+        cout << "\t\t| EXIBIR |\n\n";
+        cout << "\t\t[5] - Exibir um Evento\n\n";
+        cout << "\t\t[6] - Exibir todos Eventos\n\n\n";
         cout << "\t\t------------------------------\n\n";
-        cout << "\t\t[4] - Ler Apresentadores\n\n";
-        cout << "\t\t[5] - Exibir Apresentadores\n\n";
-        cout << "\t\t[6] - Inserir Apresentadores\n\n";
-        cout << "\t\t------------------------------\n\n";
-        cout << "\t\t[7] FALTA - Ler Participantes\n\n";
-        cout << "\t\t[8] FALTA - Exibir Participantes\n\n";
-        cout << "\t\t[9] FALTA - Inserir Participantes\n\n";
-        cout << "\t\t------------------------------\n\n";
-        cout << "\t\t[10] - Ler Eventos\n\n";
-        cout << "\t\t[11] - Exibir Eventos\n\n";
-        cout << "\t\t[12] - Inserir Eventos\n\n";
-        cout << "\t\t------------------------------\n\n";
-        cout << "\t\t[13] - Realizar inscricao evento\n\n";
+        cout << "\t\t| INCLUSAO |\n\n";
+        cout << "\t\t[7] Incluir Apresentadores\n\n";
+        cout << "\t\t[8] Incluir Eventos\n\n";
+        cout << "\t\t------------------------------\n\n\n";
+        cout << "\t\t| OUTROS |\n\n";
+        cout << "\t\t[9] - Realizar inscricao evento\n\n";
         cout << "\t\t[0] - [Sair]\n";
 
         fflush(stdin);
@@ -626,52 +710,42 @@ int main()
         }
         case 2:
         {
-            exibirCidades(cidades, contCidade);
-            break;
-        }
-        case 4:
-        {
             lerApresentadores(apresentadores, contApresentador);
             break;
         }
-        case 5:
-        {
-            exibirApresentadores(apresentadores, contApresentador);
-            break;
-        }
-        case 6:
-        {
-            incluirApresentadores(apresentadores, contApresentador, CONTADOR);
-            break;
-        }
-        case 7:
+        case 3:
         {
             lerParticipantes(participantes, contParticipante);
             break;
         }
-        case 10:
+        case 4:
         {
             lerEventos(eventos, contEvento, contCidade, contApresentador, cidades, apresentadores);
             break;
         }
-        case 11:
+        case 5:
+        {
+            exibirUmEvento(eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
+            break;
+        }
+        case 6:
         {
             exibirEventos(eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
             break;
         }
-        case 12:
+        case 7:
+        {
+            incluirApresentadores(apresentadores, contApresentador, CONTADOR);
+            break;
+        }
+        case 8:
         {
             incluirEventos(eventos, contEvento, CONTADOR, contCidade, contApresentador, cidades, apresentadores);
             break;
         }
-        case 13:
+        case 9:
         {
             inscricaoEvento(eventos, contEvento, participantes, contParticipante, cidades, contCidade, apresentadores, contApresentador);
-            break;
-        }
-        case 14:
-        {
-            exibirUmEvento(eventos, contEvento, cidades, contCidade, apresentadores, contApresentador);
             break;
         }
         default:
